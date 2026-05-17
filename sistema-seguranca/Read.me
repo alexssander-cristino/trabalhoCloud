@@ -1,0 +1,298 @@
+# Sistema de Monitoramento de Segurança
+
+## Descrição do Projeto
+
+O Sistema de Monitoramento de Segurança é uma aplicação web desenvolvida para gerenciamento de dispositivos de segurança e registro de alertas/ocorrências.
+
+O sistema permite:
+
+* cadastrar dispositivos de segurança;
+* visualizar dispositivos cadastrados;
+* registrar alertas;
+* consultar alertas registrados;
+* armazenar dados em banco PostgreSQL;
+* executar toda a aplicação utilizando Docker e Docker Compose.
+
+---
+
+# Tecnologias Utilizadas
+
+## Backend
+
+* PHP 8.2
+
+## Banco de Dados
+
+* PostgreSQL 15
+
+## Frontend
+
+* HTML5
+* CSS3
+
+## Containerização
+
+* Docker
+* Docker Compose
+
+---
+
+# Estrutura do Projeto
+
+```txt
+sistema-seguranca/
+├── app/
+│   ├── index.php
+│   ├── conexao.php
+│   ├── dispositivos.php
+│   ├── salvar_dispositivo.php
+│   ├── alertas.php
+│   ├── salvar_alerta.php
+│   └── style.css
+│
+├── Dockerfile
+├── docker-compose.yml
+├── README.md
+└── evidencias/
+```
+
+---
+
+# Arquitetura da Aplicação
+
+```txt
+Usuário
+   ↓
+Container PHP/Apache
+   ↓
+Container PostgreSQL
+   ↓
+Volume Docker
+```
+
+---
+
+# Funcionalidades
+
+## Gerenciamento de Dispositivos
+
+O sistema permite:
+
+* cadastrar dispositivos;
+* definir localização;
+* definir status;
+* listar dispositivos.
+
+### Status disponíveis:
+
+* Ativo
+* Inativo
+* Manutenção
+
+---
+
+## Gerenciamento de Alertas
+
+O sistema permite:
+
+* cadastrar alertas;
+* definir nível de risco;
+* adicionar descrição;
+* visualizar alertas registrados.
+
+### Níveis de risco:
+
+* Baixo
+* Médio
+* Alto
+
+---
+
+# Docker
+
+## Dockerfile
+
+A aplicação utiliza um container PHP com Apache.
+
+## Containers utilizados
+
+| Container             | Função           |
+| --------------------- | ---------------- |
+| sistema_seguranca_app | Aplicação PHP    |
+| sistema_seguranca_db  | Banco PostgreSQL |
+
+---
+
+# Como Executar o Projeto
+
+## 1. Clonar o repositório
+
+```bash
+git clone https://github.com/SEU_USUARIO/sistema-seguranca.git
+```
+
+---
+
+## 2. Entrar na pasta do projeto
+
+```bash
+cd sistema-seguranca
+```
+
+---
+
+## 3. Executar os containers
+
+```bash
+docker compose up --build
+```
+
+---
+
+# Acesso ao Sistema
+
+Após iniciar os containers:
+
+```txt
+http://localhost:8080
+```
+
+---
+
+# Banco de Dados
+
+## Informações do PostgreSQL
+
+| Configuração | Valor     |
+| ------------ | --------- |
+| Banco        | seguranca |
+| Usuário      | admin     |
+| Senha        | admin     |
+| Porta        | 5432      |
+
+---
+
+# Criando as Tabelas
+
+## Entrar no container PostgreSQL
+
+```bash
+docker exec -it sistema_seguranca_db psql -U admin -d seguranca
+```
+
+---
+
+## Criar tabela dispositivos
+
+```sql
+CREATE TABLE dispositivos (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100),
+    localizacao VARCHAR(100),
+    status VARCHAR(20)
+);
+```
+
+---
+
+## Criar tabela alertas
+
+```sql
+CREATE TABLE alertas (
+    id SERIAL PRIMARY KEY,
+    tipo VARCHAR(100),
+    descricao TEXT,
+    risco VARCHAR(20)
+);
+```
+
+---
+
+# Persistência de Dados
+
+O banco PostgreSQL utiliza volume Docker.
+
+Mesmo após reiniciar os containers, os dados permanecem armazenados.
+
+## Volume utilizado
+
+```txt
+postgres_data
+```
+
+---
+
+# Comandos Docker Utilizados
+
+## Iniciar containers
+
+```bash
+docker compose up --build
+```
+
+## Parar containers
+
+```bash
+docker compose down
+```
+
+## Listar containers
+
+```bash
+docker ps
+```
+
+## Listar imagens
+
+```bash
+docker images
+```
+
+## Listar volumes
+
+```bash
+docker volume ls
+```
+
+---
+
+# Docker Hub
+
+## Fazer login
+
+```bash
+docker login
+```
+
+## Enviar imagem
+
+```bash
+docker push SEU_USUARIO/sistema-seguranca
+```
+
+---
+
+# Evidências Obrigatórias
+
+A pasta `evidencias/` deve conter prints de:
+
+* aplicação funcionando;
+* docker build;
+* docker images;
+* docker compose up;
+* docker ps;
+* docker volume ls;
+* conexão com banco;
+* cadastro funcionando;
+* persistência dos dados;
+* docker login;
+* docker push;
+* página pública da imagem.
+
+---
+
+# Desenvolvedor
+
+Projeto desenvolvido para a disciplina de Cloud Computing.
+
+Curso: Sistemas de Informação
